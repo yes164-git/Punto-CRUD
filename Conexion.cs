@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data;
 
 namespace Punto
 {
     internal class Conexion
     {
-        private readonly string cadenaConexion = "Server=localhost;Database=PuntoDB;User ID=root;Password=;Port=3306;SslMode=none";
+        private readonly string cadenaConexion = "Server=localhost;Database=PuntoDB;User ID=root;Password=;Port=3306;SslMode=None;";
 
         public MySqlConnection obtenerConexion()
         {
