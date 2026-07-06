@@ -49,66 +49,41 @@ namespace Punto.Forms
 
         private void btnNuevo_Click_1(object sender, System.EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtPrecio.Text) ||
-                string.IsNullOrWhiteSpace(txtStock.Text) || cmbCategorias.SelectedIndex == -1)
+            // Validar campos numéricos de forma segura
+            if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || !int.TryParse(txtStock.Text, out int stock))
             {
-                MessageBox.Show("Por favor, llene todos los campos y seleccione una categoría.", "Campos Vacíos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // (TryParse)
-            decimal precioValido;
-            int stockValido;
-
-            if (!decimal.TryParse(txtPrecio.Text, out precioValido))
-            {
-                MessageBox.Show("El precio debe ser un número válido (ejemplo: 15.50).", "Formato Incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtPrecio.Focus();
-                return;
-            }
-
-            if (!int.TryParse(txtStock.Text, out stockValido))
-            {
-                MessageBox.Show("El stock debe ser un número entero (ejemplo: 10).", "Formato Incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtStock.Focus();
+                MessageBox.Show("Por favor, ingrese un precio y stock válidos.", "Formato Incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             Conexion conBD = new Conexion();
-
             using (MySqlConnection conexion = conBD.obtenerConexion())
             {
                 if (conexion != null)
                 {
                     try
                     {
-                        string query = "INSERT INTO productos (descripcion, precio, stock, categoria) VALUES (@descripcion, @precio, @stock, @categoria)";
-
+                        // Consulta limpia combinando exactamente con las columnas de tu MySQL
+                        string query = "INSERT INTO productos (codigo, descripcion, precio, stock) VALUES (@codigo, @descripcion, @precio, @stock)";
                         MySqlCommand comando = new MySqlCommand(query, conexion);
 
-                        comando.Parameters.AddWithValue("@descripcion", txtNombre.Text);
-                        comando.Parameters.AddWithValue("@precio", precioValido);
-                        comando.Parameters.AddWithValue("@stock", stockValido);
-                        comando.Parameters.AddWithValue("@categoria", cmbCategorias.Text);
+                        comando.Parameters.AddWithValue("@codigo", txtCodigo.Text);
+                        comando.Parameters.AddWithValue("@descripcion", txtNombre.Text); // Vincula tu caja de texto "Nombre" al campo descripcion de MySQL
+                        comando.Parameters.AddWithValue("@precio", precio);
+                        comando.Parameters.AddWithValue("@stock", stock);
 
-                        int filasAfectadas = comando.ExecuteNonQuery();
+                        comando.ExecuteNonQuery();
+                        MessageBox.Show("Producto registrado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        if (filasAfectadas > 0)
-                        {
-                            MessageBox.Show("¡Producto guardado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            LimpiarFormulario();
-
-                            CargarProductos();
-                        }
+                        // Aquí llamas a tu método para refrescar la tabla (ej. MostrarProductos();)
                     }
-                    catch (MySqlException ex)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Error al guardar en la base de datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error al guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
                 }
             }
+
         }
 
         private void LimpiarFormulario()
