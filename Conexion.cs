@@ -11,7 +11,7 @@ namespace Punto
 {
     internal class Conexion
     {
-        private readonly string cadenaConexion = "Server=localhost;Database=PuntoDB;User ID=root;Password=;Port=3306;SslMode=None;";
+        private readonly string cadenaConexion = "Server=localhost;Database=PuntoDB;User ID=root;Password=;Port=3306;";
 
         public MySqlConnection obtenerConexion()
         {

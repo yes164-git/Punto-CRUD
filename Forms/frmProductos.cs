@@ -47,7 +47,7 @@ namespace Punto.Forms
             }
         }
 
-        private void btnNuevo_Click(object sender, System.EventArgs e)
+        private void btnNuevo_Click_1(object sender, System.EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtPrecio.Text) ||
                 string.IsNullOrWhiteSpace(txtStock.Text) || cmbCategorias.SelectedIndex == -1)
@@ -127,14 +127,16 @@ namespace Punto.Forms
             {
                 DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
 
-                lblId.Text = fila.Cells[0].Value.ToString(); 
-                txtCodigo.Text = fila.Cells[1].Value.ToString();
-                txtNombre.Text = fila.Cells[2].Value.ToString(); 
-                txtPrecio.Text = fila.Cells[3].Value.ToString(); 
-                txtStock.Text = fila.Cells[4].Value.ToString();
+                // ¡Esta línea es la clave para que el botón Editar sepa a quién actualizar!
+                lblId.Text = fila.Cells["producto_id"].Value.ToString();
+
+                txtCodigo.Text = fila.Cells["codigo"].Value.ToString();
+                txtNombre.Text = fila.Cells["descripcion"].Value.ToString(); // Nota: En tu diseño le pusiste "Nombre", asegúrate de mapearlo a tu txt de descripción
+                txtPrecio.Text = fila.Cells["precio"].Value.ToString();
+                txtStock.Text = fila.Cells["stock"].Value.ToString();
             }
         }
-        private void btnEditar_Click(object sender, EventArgs e)
+        private void btnEditar_Click_1(object sender, EventArgs e)
         {
             // VALIDACIÓN DE SEGURIDAD: Verificar que haya un ID seleccionado
             if (string.IsNullOrWhiteSpace(lblId.Text))
@@ -211,7 +213,7 @@ namespace Punto.Forms
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void btnEliminar_Click_1(object sender, EventArgs e)
         {
             // VALIDACIÓN DE SEGURIDAD: Verificar que haya un ID seleccionado en la tabla
             if (string.IsNullOrWhiteSpace(lblId.Text))

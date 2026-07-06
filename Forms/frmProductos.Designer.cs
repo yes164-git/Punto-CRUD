@@ -123,6 +123,9 @@ namespace Punto.Forms
             // cmbCategorias
             // 
             this.cmbCategorias.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategorias.Items.AddRange(new object[] {
+            "frituras",
+            "lactios"});
             this.cmbCategorias.Location = new System.Drawing.Point(615, 48);
             this.cmbCategorias.Name = "cmbCategorias";
             this.cmbCategorias.Size = new System.Drawing.Size(150, 24);
@@ -141,6 +144,7 @@ namespace Punto.Forms
             this.btnNuevo.TabIndex = 0;
             this.btnNuevo.Text = "Nuevo";
             this.btnNuevo.UseVisualStyleBackColor = false;
+            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click_1);
             // 
             // btnEditar
             // 
@@ -155,6 +159,7 @@ namespace Punto.Forms
             this.btnEditar.TabIndex = 1;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = false;
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click_1);
             // 
             // btnEliminar
             // 
@@ -169,6 +174,7 @@ namespace Punto.Forms
             this.btnEliminar.TabIndex = 2;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click_1);
             // 
             // label1
             // 

@@ -31,22 +31,24 @@ namespace Punto.Forms
                 {
                     try
                     {
-                        string query = "SELECT COUNT(*) FROM usuarios WHERE usuario = @usuario AND password = @password";
+                        string query = "SELECT COUNT(*) FROM usuarios WHERE username = @username AND PASSWORD = @PASSWORD";
 
                         MySqlCommand comando = new MySqlCommand(query, conexion);
 
-                        comando.Parameters.AddWithValue("@usuario", txtUser.Text);
-                        comando.Parameters.AddWithValue("@password", txtPassword.Text);
+                        comando.Parameters.AddWithValue("@username", txtUser.Text);
+                        comando.Parameters.AddWithValue("@PASSWORD", txtPassword.Text);
 
-                        int existe = Convert.ToInt32(comando.ExecuteScalar());
-                        if (existe > 0)
+                        object resultado = comando.ExecuteScalar();
+
+                        // Validamos que no sea nulo y convertimos de forma segura
+                        if (resultado != null && Convert.ToInt32(resultado) > 0)
                         {
-                            MessageBox.Show("¡Bienvenido al sistema!", "Ingreso Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // ¡Aquí pones tu código de acceso exitoso!
+                            MessageBox.Show("¡Bienvenido al sistema!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // Aquí abrirías tu siguiente formulario (Menú Principal)
-                            frmPrincipal menu = new frmPrincipal();
-                            menu.Show();
-                            this.Hide(); // Oculta el Login
+                            frmProductos pantallaPrincipal = new frmProductos();
+                            pantallaPrincipal.Show();
+                            this.Hide();
                         }
                         else
                         {
